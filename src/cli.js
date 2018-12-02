@@ -11,6 +11,9 @@ const cli = meow(`
         gs, generate-service [name]   Generates an AngularJS-Service
         gf, generate-filter [name]    Generates an AngularJS-Filter
         grc, generate-router-config   Generates config for the ui.router
+        cp, create-project [name]     Creates an AngularJS-Material-Project, --routing adds routing-config to the project
+        serve                         Serves the application
+        build                         Builds the application
     
     Options:
        -h, --help         print usage information

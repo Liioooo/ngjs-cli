@@ -1,5 +1,5 @@
 {
-  "name": "ngjs-cli-htl3r",
+  "name": "ngjs-cli",
   "version": "1.0.0",
   "description": "CLI for AngularJS by Liiiooo",
   "repository": {
@@ -10,13 +10,20 @@
   "scripts": {},
   "author": "Liiioooo <leo.prei1408@gmail.com>",
   "license": "ISC",
-  "keywords": ["angularjs", "cli"],
+  "keywords": [
+    "angularjs",
+    "cli"
+  ],
   "bin": {
     "ngjs-cli": "src/cli.js"
   },
   "dependencies": {
     "chalk": "^2.4.1",
     "meow": "^5.0.0",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "browser-sync": "^2.26.3",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.4"
   }
 }

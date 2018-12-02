@@ -1,12 +1,12 @@
-#NGJS-CLI
+# NGJS-CLI
 CLI for AngularJS by Liiiooo
 
-###Installation:
+### Installation:
 ```
 npm install ngjs-cli --save-dev
 ```
 
-###Documentation:
+### Documentation:
 - Usage: `ngjs-cli [command]` 
 
 - Commands:
