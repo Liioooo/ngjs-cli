@@ -23,7 +23,7 @@ function generateComp(name, cli) {
         process.exit();
     }
 
-    let template = fs.readFileSync(path.join(__dirname, '..', 'templates', 'component.js'), 'utf8');
+    let template = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'component.js'), 'utf8');
     template = template.replace(new RegExp('###kebabCaseName###', 'g'), name);
 
     let camelCaseName = name.replace(/-([a-z0-9])/g, (x, up) => up.toUpperCase());

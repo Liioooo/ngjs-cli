@@ -8,7 +8,7 @@ function generateRouterConfig(cli) {
         process.exit();
     }
 
-    fs.copyFileSync(path.join(__dirname, '..', 'templates', 'router-config.js'), process.cwd() + '\\app\\router-config.js');
+    fs.copyFileSync(path.join(__dirname, '..', '..', 'templates', 'router-config.js'), process.cwd() + '\\app\\router-config.js');
 
     console.log(`  Created router-config successfully!`)
 }

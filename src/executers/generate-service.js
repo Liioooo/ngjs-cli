@@ -23,7 +23,7 @@ function generateService(name, cli) {
         process.exit();
     }
 
-    let template = fs.readFileSync(path.join(__dirname, '..', 'templates', 'service.js'), 'utf8');
+    let template = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'service.js'), 'utf8');
     template = template.replace(new RegExp('###camelCaseName###', 'g'), name);
 
     let upperCaseName = name.charAt(0).toUpperCase() + name.slice(1);

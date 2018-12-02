@@ -23,7 +23,7 @@ function generateFilter(name, cli) {
         process.exit();
     }
 
-    let template = fs.readFileSync(path.join(__dirname, '..', 'templates', 'filter.js'), 'utf8');
+    let template = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'filter.js'), 'utf8');
     template = template.replace(new RegExp('###name###', 'g'), name);
 
     fs.writeFileSync(process.cwd() + '\\app\\filters\\' + name + '.filter.js', template);

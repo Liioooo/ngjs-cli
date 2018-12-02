@@ -1,15 +1,18 @@
 {
-  "name": "ngjs-cli",
+  "name": "ngjs-cli-htl3r",
   "version": "1.0.0",
   "description": "CLI for AngularJS by Liiiooo",
-  "main": "cli.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Liiioooo/ngjs-cli.git"
   },
-  "author": "",
+  "main": "src/cli.js",
+  "scripts": {},
+  "author": "Liiioooo <leo.prei1408@gmail.com>",
   "license": "ISC",
+  "keywords": ["angularjs", "cli"],
   "bin": {
-    "ngjs-cli": "./cli.js"
+    "ngjs-cli": "src/cli.js"
   },
   "dependencies": {
     "chalk": "^2.4.1",
