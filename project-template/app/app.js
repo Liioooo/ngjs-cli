@@ -1,10 +1,10 @@
 "use strict";
 
-// Einziges Modul dieser App und seine Abhängigkeiten
+// Module and its dependencies
 var app = angular.module("Vorlage", ["ngResource", "ngMessages", "ngLocale", "ngSanitize",
     "ngAnimate", "ngMaterial", "ui.router"]);
 
-// Einstellungen für Debugging
+// Settings for Debugging
 app.config(function($logProvider, $compileProvider, $mdAriaProvider, $qProvider) {
     $logProvider.debugEnabled(true);
     $compileProvider.debugInfoEnabled(true);
@@ -13,7 +13,7 @@ app.config(function($logProvider, $compileProvider, $mdAriaProvider, $qProvider)
 });
 
 
-// Thema einstellen, mögliche Paletten sind:
+// Set Theme:
 // red, pink, purple, deep-purple, indigo, blue, light-blue, cyan, teal, green,
 // light-green, lime, yellow, amber, orange, deep-orange, brown, grey, blue-grey
 app.config(function($mdThemingProvider) {
@@ -23,7 +23,7 @@ app.config(function($mdThemingProvider) {
 });
 
 
-// Datepicker auf AngularJS-Gebietsschema einstellen
+// set Datepicker to German
 app.config(function($localeProvider, $mdDateLocaleProvider) {
     var locale = $localeProvider.$get();
 

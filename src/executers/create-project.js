@@ -5,7 +5,7 @@ let projectName;
 
 function createProject(name, cli) {
     projectName = name;
-    const regex = new RegExp('^[a-zA-Z0-9\-]+$');
+    const regex = new RegExp('^([a-zA-Z0-9\-])+$');
     if(!regex.test(name)) {
         console.log(chalk.default.red(`  Error: Name is invalid: It has to start with a lower case letter and contain only letters, numbers and -.`));
         process.exit();

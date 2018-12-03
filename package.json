@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/Liiioooo/ngjs-cli.git"
   },
+  "bugs": {
+    "url": "https://github.com/Liiioooo/ngjs-cli/issues"
+  },
   "main": "src/cli.js",
   "scripts": {},
   "author": "Liiioooo <leo.prei1408@gmail.com>",
@@ -18,12 +21,15 @@
     "ngjs-cli": "src/cli.js"
   },
   "dependencies": {
-    "chalk": "^2.4.1",
-    "meow": "^5.0.0",
-    "minimist": "^1.2.0",
     "browser-sync": "^2.26.3",
+    "browserify": "^16.2.3",
+    "chalk": "^2.4.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-sourcemaps": "^2.6.4"
+    "gulp-sourcemaps": "^2.6.4",
+    "meow": "^5.0.0",
+    "minimist": "^1.2.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   }
 }

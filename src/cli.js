@@ -37,15 +37,3 @@ else if(args['version']) {
 else if(args['help'] || args._.length === 0) {
     cli.showHelp(0);
 }
-
-//used to autoInject Services in the Controller
-// function autoInjectServices(object, args) {
-//     if(args.length === 0 ) return;
-//     let code = object.constructor.toString();
-//     code = code.match('constructor\\([\\$a-zA-Z0-9\\,\\s]+\\)')[0];
-//     code = code.substring(code.indexOf('(')+1, code.indexOf(')'));
-//     code = code.split(', ');
-//     for (let i = 0; i < code.length; i++) {
-//         Object.defineProperty(object, code[i], {value: args[i]})
-//     }
-// }

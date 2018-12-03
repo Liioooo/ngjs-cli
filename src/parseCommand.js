@@ -12,7 +12,7 @@ const commands = [
     { command: ['gs', 'generate-service'], executor: service.generateService, needsParams: true },
     { command: ['gf', 'generate-filter'], executor: filter.generateFilter, needsParams: true },
     { command: ['grc', 'generate-router-config'], executor: routerConfig.generateRouterConfig, needsParams: false },
-    { command: ['cp', 'create-project'], executor: create.createProject, needsParams: false },
+    { command: ['cp', 'create-project'], executor: create.createProject, needsParams: true },
     { command: ['serve'], executor: serve.serveProject, needsParams: false },
     { command: ['build'], executor: build.buildProject, needsParams: false }
 ];
