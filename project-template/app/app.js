@@ -1,8 +1,9 @@
 "use strict";
+var angular = require('angular');
 
 // Module and its dependencies
-var app = angular.module("Vorlage", ["ngResource", "ngMessages", "ngLocale", "ngSanitize",
-    "ngAnimate", "ngMaterial", "ui.router"]);
+var app = angular.module("Vorlage", [require('angular-resource'), require('angular-messages'), require('angular-sanitize'),
+    require('angular-animate'), require('angular-material'), require('angular-ui-router').default]);
 
 // Settings for Debugging
 app.config(function($logProvider, $compileProvider, $mdAriaProvider, $qProvider) {

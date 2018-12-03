@@ -10,7 +10,7 @@ function serveProject(cli) {
     }
 
     console.log("Serving Application...");
-    gulp.start('watch'); //TODO: remove
+    gulp.start('watch');
 }
 
 module.exports = {serveProject};

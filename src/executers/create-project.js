@@ -11,8 +11,13 @@ function createProject(name, cli) {
         process.exit();
     }
 
-    if(fs.existsSync(process.cwd() + name)) {
+    if(fs.existsSync(process.cwd() + '\\' +name)) {
         console.log(chalk.default.red('  Error: A directory with this name already exists!'));
+        process.exit();
+    }
+
+    if(fs.existsSync(process.cwd() + '\\app\\components')) {
+        console.log(chalk.default.red('  Error: The current directory already is a AngularJS project!'));
         process.exit();
     }
 

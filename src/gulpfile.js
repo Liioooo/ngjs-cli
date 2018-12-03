@@ -40,10 +40,17 @@ gulp.task('compile-js', ['concat-js'], function () {
         .pipe(gulp.dest(projectPath + "/app/"));
 });
 
-gulp.task('watch', ['browserSync', 'concat-js'], function () {
+gulp.task('copyFiles', function () {
+    gulp.src(projectPath + '/node_modules/angular-material/angular-material.min.css')
+        .pipe(gulp.dest(projectPath + '/app/vendor/angular-material'));
+    gulp.src(projectPath + '/node_modules/jquery/dist/jquery.min.js')
+        .pipe(gulp.dest(projectPath + '/app/vendor/jquery'));
+});
+
+gulp.task('watch', ['browserSync', 'compile-js', 'copyFiles'], function () {
     gulp.watch([projectPath + '/app/**/*.js', '!' + projectPath + '/app/vendor/**', '!' + projectPath + '/app/bundle.js', '!*spec.js'], function (ev) {
         console.log(ev.type + ' ' + ev.path);
-        gulp.start('concat-js');
+        gulp.start('compile-js');
     });
     gulp.watch([projectPath + '/app/**/*.html', '!' + projectPath + '/app/vendor/**'], function (ev) {
         console.log(ev.type + ' ' + ev.path);
@@ -51,12 +58,22 @@ gulp.task('watch', ['browserSync', 'concat-js'], function () {
     });
 });
 
-gulp.task('build', function () {
+gulp.task('build', ['copyFiles'], function () {
     gulp.src([projectPath + '/app/**/*.html', projectPath + '/app/**/*.css', projectPath + "/app/**/*.ico"])
         .pipe(gulp.dest(projectPath + '/dist'));
     gulp.src(projectPath + '/app/vendor/**')
         .pipe(gulp.dest(projectPath + '/dist/vendor'));
     gulp.src([ projectPath + '/app/**/*.js', '!' + projectPath + '/app/vendor/**', '!' + projectPath + '/app/**/*.spec.js', '!' + projectPath + '/app/bundle.js'])
         .pipe(concat('bundle.js'))
-        .pipe(gulp.dest(projectPath + '/dist/'))
+        .pipe(gulp.dest(projectPath + '/dist/'));
+
+    const b = browserify({
+        entries: projectPath + '/dist/bundle.js',
+        debug: true,
+    });
+
+    b.bundle()
+        .pipe(source("bundle.js"))
+        .pipe(buffer())
+        .pipe(gulp.dest(projectPath + "/dist/"));
 });
