@@ -10,7 +10,7 @@ function buildProject(cli) {
     }
 
     console.log("Building Application...");
-    gulp.start('build');
+    gulp.start('build')
 }
 
 module.exports = {buildProject};
