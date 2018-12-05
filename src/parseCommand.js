@@ -1,38 +1,34 @@
-const comp = require('./executers/generate-comp');
-const service = require('./executers/generate-service');
-const filter = require('./executers/generate-filter');
-const routerConfig = require('./executers/generate-router-config');
-const create = require('./executers/create-project');
-const serve = require('./executers/serve');
-const build = require('./executers/build');
+const HelpProvidor = require('./HelpProvidor');
+const errors = require('./errors');
 const chalk = require('chalk');
 
-const commands = [
-    { command: ['gc', 'generate-component'], executor: comp.generateComp, needsParams: true },
-    { command: ['gs', 'generate-service'], executor: service.generateService, needsParams: true },
-    { command: ['gf', 'generate-filter'], executor: filter.generateFilter, needsParams: true },
-    { command: ['grc', 'generate-router-config'], executor: routerConfig.generateRouterConfig, needsParams: false },
-    { command: ['cp', 'create-project'], executor: create.createProject, needsParams: true },
-    { command: ['serve'], executor: serve.serveProject, needsParams: false },
-    { command: ['build'], executor: build.buildProject, needsParams: false }
-];
+let commands = [];
+require("fs").readdirSync(__dirname + '\\commands').forEach((file) => {
+    commands.push(require("./commands/" + file));
+});
 
-function parseCommand(command, cli) {
-    let executedCommand = false;
-    commands.forEach(item => {
-        if(item.command.includes(command[0])) {
-            if(!item.needsParams) {
-                item.executor(cli);
-            } else {
-                item.executor(command[1], cli);
+function parseCommand(args) {
+    for(let cmd of commands) {
+        if(cmd.commandName.includes(args._[0])) {
+            try {
+                if(args['help'] || (args._.length === 1 && cmd.needArgs)) {
+                    if((args._.length === 1 && cmd.needArgs)) {
+                        console.log(chalk.default.red('   ' + 'Error: Arguments not specified!'));
+                    }
+                    HelpProvidor.printHelpForCommand(cmd);
+                } else {
+                    cmd.run(args);
+                    return;
+                }
+            } catch (e) {
+                if(e instanceof errors.ErrorPrintableMessage) {
+                    e.printError();
+                }
+                return;
             }
-            executedCommand = true;
         }
-    });
-    if(!executedCommand) {
-        console.log(chalk.default.red(`  Error: The Command "${command[0]}" was not found!`));
-        cli.showHelp(0);
     }
+    console.log(chalk.default.red('   ' + 'Error: Command not found!'));
 }
 
 module.exports = {parseCommand};
