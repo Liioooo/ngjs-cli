@@ -3,7 +3,7 @@ CLI for AngularJS by Liiiooo
 
 ### Installation:
 ```
-npm install ngjs-cli --save-dev
+npm install ngjs-cli --g
 ```
 
 ### Documentation:
