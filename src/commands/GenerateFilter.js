@@ -7,11 +7,11 @@ const errors = require('../errors');
 module.exports = class GenerateFilter extends Command {
 
     static get commandName() {
-        return ['gf', 'generate-filter'];
+        return ['gfi', 'generate-filter'];
     }
 
     static get helpText() {
-        return 'gf, generate-filter [name]    Generates an AngularJS-Filter';
+        return 'gfi, generate-filter [name]    Generates an AngularJS-Filter';
     }
 
     static get needArgs() {

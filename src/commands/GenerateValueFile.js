@@ -1,10 +1,9 @@
 const Command = require('../Command');
 const fs = require('fs');
-const path = require('path');
 const chalk = require('chalk');
 const errors = require('../errors');
 
-module.exports = class GenerateService extends Command {
+module.exports = class GenerateValueFile extends Command {
 
     static get commandName() {
         return ['gvf', 'generate-value-file'];

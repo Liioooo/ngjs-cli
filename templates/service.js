@@ -8,4 +8,4 @@ class ###upperCaseName###Service {
 
 }
 
-app.service("###camelCaseName###", ###upperCaseName###Service);
+app.service("###upperCaseName###Service", ###upperCaseName###Service);

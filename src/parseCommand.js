@@ -18,12 +18,12 @@ function parseCommand(args) {
                     HelpProvidor.printHelpForCommand(cmd);
                 } else {
                     cmd.run(args);
-                    return;
                 }
             } catch (e) {
                 if(e instanceof errors.ErrorPrintableMessage) {
                     e.printError();
                 }
+            } finally {
                 return;
             }
         }

@@ -4,14 +4,14 @@ const path = require('path');
 const chalk = require('chalk');
 const errors = require('../errors');
 
-module.exports = class GenerateService extends Command {
+module.exports = class GenerateFactory extends Command {
 
     static get commandName() {
-        return ['gs', 'generate-service'];
+        return ['gfa', 'generate-factory'];
     }
 
     static get helpText() {
-        return 'gs, generate-service [name]   Generates an AngularJS-Service';
+        return 'gfa, generate-factory [name]   Generates an AngularJS-Factory';
     }
 
     static get needArgs() {
@@ -30,16 +30,16 @@ module.exports = class GenerateService extends Command {
             throw new errors.InvalidNameErrorUC();
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\services\\' + name + '.service.js')) {
-            throw new errors.ErrorPrintableMessage(`  Error: A service with the name: "${name}" already exists!`);
+        if(fs.existsSync(process.cwd() + '\\app\\factories\\' + name + '.factory.js')) {
+            throw new errors.ErrorPrintableMessage(`  Error: A factory with the name: "${name}" already exists!`);
         }
 
-        let template = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'service.js'), 'utf8');
+        let template = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'factory.js'), 'utf8');
 
         template = template.replace(new RegExp('###upperCaseName###', 'g'), name);
 
-        fs.writeFileSync(process.cwd() + '\\app\\services\\' + name + '.service.js', template);
+        fs.writeFileSync(process.cwd() + '\\app\\factories\\' + name + '.factory.js', template);
 
-        console.log(chalk.default.green(`  Created Service "${name}" successfully!`));
+        console.log(chalk.default.green(`  Created Factory "${name}" successfully!`));
     }
 };

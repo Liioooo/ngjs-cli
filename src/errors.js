@@ -36,6 +36,16 @@ class InvalidNameErrorLNH extends ErrorPrintableMessage {
     }
 }
 
+class InvalidNameErrorUC extends ErrorPrintableMessage {
+
+    constructor() {
+        super();
+        this.message = 'Error: Name is invalid: It has to start with a upper case letter and contain only letters and numbers.';
+        this.stack = (new Error(this.message)).stack;
+        this.name = 'InvalidNameErrorUC';
+    }
+}
+
 class CurrentDirNotAngularJS extends ErrorPrintableMessage {
 
     constructor() {
@@ -50,4 +60,4 @@ function printWarning(message) {
     console.log(chalk.default.yellow('   ' + message));
 }
 
-module.exports = {ErrorPrintableMessage, NotAProjectDirError, InvalidNameErrorLNH, CurrentDirNotAngularJS, printWarning};
+module.exports = {ErrorPrintableMessage, NotAProjectDirError, InvalidNameErrorLNH, CurrentDirNotAngularJS, printWarning, InvalidNameErrorUC};
