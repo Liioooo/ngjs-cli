@@ -1,16 +1,41 @@
-let gulp = require('gulp');
-let concat = require('gulp-concat');
-let sourcemaps = require('gulp-sourcemaps');
-let browserSync = require('browser-sync').create();
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const browserSync = require('browser-sync').create();
+const proxy = require('http-proxy-middleware');
+const fs = require('fs');
+const chalk = require('chalk');
 
 const projectPath = process.cwd();
 
+const jsonPlaceholderProxy1 = proxy('/img/**', {
+   target: 'http://localhost:80',
+   changeOrigin: true,
+});
+const jsonPlaceholderProxy2 = proxy('/kek/**', {
+    target: 'http://localhost:80',
+    changeOrigin: true,
+});
+
 gulp.task('browserSync', function() {
+    if(process.env.PROXYCONFIG_FILE) {
+        let proxyconfig;
+        try {
+            proxyconfig = JSON.parse(fs.readFileSync(process.cwd() + '\\' + process.env.PROXYCONFIG_FILE));
+        } catch (e) {
+            console.log(chalk.default.red('   Error: Invalid proxyconfig file!'));
+            process.exit();
+        }
+        //TODO: parse proxyconfig
+        console.log(proxyconfig)
+    }
     browserSync.init({
         server: {
             baseDir: projectPath + '/app',
-            index: 'index.html'
+            index: 'index.html',
         },
+        logPrefix: 'NGJS-CLI',
+        middleware: [jsonPlaceholderProxy1, jsonPlaceholderProxy2]
     })
 });
 

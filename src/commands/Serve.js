@@ -11,7 +11,7 @@ module.exports = class Serve extends Command {
     }
 
     static get helpText() {
-        return 'serve                         Serves the application';
+        return 'serve                         Serves the application, --proxyconfig [configFile] proxies requests';
     }
 
     static get needArgs() {
@@ -23,6 +23,11 @@ module.exports = class Serve extends Command {
             throw new errors.NotAProjectDirError();
         }
 
+        if(args['proxyconfig']) {
+            if(args['proxyconfig'] !== true) {
+                process.env.PROXYCONFIG_FILE = args['proxyconfig'];
+            }
+        }
         console.log("   Serving Application...");
         gulp.start('watch');
     }

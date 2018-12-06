@@ -26,6 +26,7 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-sourcemaps": "^2.6.4",
+    "http-proxy-middleware": "^0.19.1",
     "minimist": "^1.2.0"
   }
 }
