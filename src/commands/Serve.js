@@ -23,6 +23,7 @@ module.exports = class Serve extends Command {
             throw new errors.NotAProjectDirError();
         }
 
+        delete process.env.PROXYCONFIG_FILE;
         if(args['proxyconfig']) {
             if(args['proxyconfig'] !== true) {
                 process.env.PROXYCONFIG_FILE = args['proxyconfig'];

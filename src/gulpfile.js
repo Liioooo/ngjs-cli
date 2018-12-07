@@ -8,26 +8,19 @@ const chalk = require('chalk');
 
 const projectPath = process.cwd();
 
-const jsonPlaceholderProxy1 = proxy('/img/**', {
-   target: 'http://localhost:80',
-   changeOrigin: true,
-});
-const jsonPlaceholderProxy2 = proxy('/kek/**', {
-    target: 'http://localhost:80',
-    changeOrigin: true,
-});
-
+let jsonPlaceholderProxyArray = [];
 gulp.task('browserSync', function() {
     if(process.env.PROXYCONFIG_FILE) {
         let proxyconfig;
         try {
             proxyconfig = JSON.parse(fs.readFileSync(process.cwd() + '\\' + process.env.PROXYCONFIG_FILE));
+            Object.keys(proxyconfig).forEach(key => {
+                jsonPlaceholderProxyArray.push(proxy(key, proxyconfig[key]));
+            });
         } catch (e) {
             console.log(chalk.default.red('   Error: Invalid proxyconfig file!'));
             process.exit();
         }
-        //TODO: parse proxyconfig
-        console.log(proxyconfig)
     }
     browserSync.init({
         server: {
@@ -35,7 +28,7 @@ gulp.task('browserSync', function() {
             index: 'index.html',
         },
         logPrefix: 'NGJS-CLI',
-        middleware: [jsonPlaceholderProxy1, jsonPlaceholderProxy2]
+        middleware: jsonPlaceholderProxyArray || []
     })
 });
 
