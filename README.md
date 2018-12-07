@@ -32,9 +32,9 @@ npm install ngjs-cli -g
     - import them via a script tag in 'index.html' 
     
  #### Proxy
-It ist possible to proxy requests to some URLS to another Server.
+It ist possible to proxy requests for some URLS to another Server.
 - At first add a proxyconfig File to your Project
-- To use the proxy add the --proxyconfig \[configFile] to the serve command
+- To use the proxy add the --proxyconfig \[configFile] flag to the serve command
 - Config File example
     ```json
     {
