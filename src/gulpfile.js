@@ -91,4 +91,6 @@ gulp.task('copyDist', function () {
         .pipe(gulp.dest(projectPath + '/dist/'));
     gulp.src([projectPath + '/app/vendor/**'])
         .pipe(gulp.dest(projectPath + '/dist/vendor'));
+    gulp.src([projectPath + '/app/assets/**'])
+        .pipe(gulp.dest(projectPath + '/dist/assets'));
 });
