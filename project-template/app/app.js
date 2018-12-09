@@ -1,7 +1,7 @@
 "use strict";
 
 // Module and its dependencies
-var app = angular.module("Vorlage", [ "ngResource", "ngMessages", "ngLocale", "ngSanitize",
+var app = angular.module("Template", [ "ngResource", "ngMessages", "ngLocale", "ngSanitize",
     "ngAnimate", "ngMaterial", "ui.router" ]);
 
 // Settings for Debugging
