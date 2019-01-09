@@ -19,7 +19,7 @@ npm install ngjs-cli -g
     gvf, generate-value-file      Generates a File were you can define values
     gfa, generate-factory [name]  Generates an AngularJS-Factory
     serve                         Serves the application, --proxyconfig [configFile]: proxies requests
-    build                         Builds the application
+    build                         Builds the application (You must serve the app one time before you can build it)
     ```
     
 - Creating a project
@@ -56,4 +56,7 @@ It ist possible to proxy requests for some URLs to another Server.
     Example:<br>
     /api/users/getUser.php > http://localhost:80/api/users/getUsers.php
 - To read more go to the [http-proxy-middleware Documentation](https://github.com/chimurai/http-proxy-middleware#options)
-    
+
+### Changes:
+`3.0.1`<br>
+Changed style to SCSS, there are know stylesheets for every component

@@ -11,7 +11,7 @@ module.exports = class Build extends Command {
     }
 
     static get helpText() {
-        return 'build                         Builds the application';
+        return 'build                         Builds the application (You must serve the app one time before you can build it)';
     }
 
     static get needArgs() {

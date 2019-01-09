@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
+const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create();
 const proxy = require('http-proxy-middleware');
@@ -41,6 +42,16 @@ gulp.task('concat-js-serve', function () {
         .pipe(browserSync.stream());
 });
 
+gulp.task('compile-sass-serve', function () {
+   gulp.src([projectPath + '/app/app.scss'])
+       .pipe(sourcemaps.init())
+       .pipe(sass())
+       .pipe(sourcemaps.write())
+       .pipe(gulp.dest(projectPath + '/app'))
+       .pipe(browserSync.stream());
+
+});
+
 gulp.task('copyFilesToVendor', function () {
     gulp.src(projectPath + '/node_modules/angular/angular.min.js')
         .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
@@ -64,10 +75,14 @@ gulp.task('copyFilesToVendor', function () {
         .pipe(gulp.dest(projectPath + '/app/vendor/jquery'));
 });
 
-gulp.task('watch', ['browserSync', 'concat-js-serve', 'copyFilesToVendor'], function () {
+gulp.task('watch', ['browserSync', 'concat-js-serve', 'compile-sass-serve', 'copyFilesToVendor'], function () {
     gulp.watch([projectPath + '/app/**/*.js', '!' + projectPath + '/app/vendor/**', '!' + projectPath + '/app/bundle.js', '!*spec.js'], function (ev) {
         console.log(ev.type + ' ' + ev.path);
         gulp.start('concat-js-serve');
+    });
+    gulp.watch([projectPath + '/app/**/*.scss', '!' + projectPath + '/app/vendor/**'], function (ev) {
+        console.log(ev.type + ' ' + ev.path);
+        gulp.start('compile-sass-serve');
     });
     gulp.watch([projectPath + '/app/**/*.html', '!' + projectPath + '/app/vendor/**'], function (ev) {
         console.log(ev.type + ' ' + ev.path);
@@ -75,8 +90,10 @@ gulp.task('watch', ['browserSync', 'concat-js-serve', 'copyFilesToVendor'], func
     });
 });
 
-gulp.task('build', ['copyFilesToVendor', 'copyDist'], function () {
+gulp.task('build', [], function () {
     gulp.start('concat-js-build');
+    gulp.start('compile-sass-build');
+    gulp.start('copyDist');
 
 });
 
@@ -86,8 +103,14 @@ gulp.task('concat-js-build', function () {
         .pipe(gulp.dest(projectPath + '/dist/'));
 });
 
+gulp.task('compile-sass-build', function () {
+    gulp.src([projectPath + '/app/app.scss'])
+        .pipe(sass())
+        .pipe(gulp.dest(projectPath + '/dist'))
+});
+
 gulp.task('copyDist', function () {
-    gulp.src([projectPath + '/app/**/*.html', projectPath + '/app/**/*.css', projectPath + '/app/**/*.ico'])
+    gulp.src([projectPath + '/app/**/*.html', projectPath + '/app/**/*.ico'])
         .pipe(gulp.dest(projectPath + '/dist/'));
     gulp.src([projectPath + '/app/vendor/**'])
         .pipe(gulp.dest(projectPath + '/dist/vendor'));

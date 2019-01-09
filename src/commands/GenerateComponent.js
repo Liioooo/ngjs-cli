@@ -47,6 +47,13 @@ module.exports = class GenerateComponent extends Command {
         fs.writeFileSync(process.cwd() + '\\app\\components\\' + name + '\\' + name + '.component.js', template);
         fs.writeFileSync(process.cwd() + '\\app\\components\\' + name + '\\' + name + '.component.html', `<p>${name} works!</p>`);
 
+        let appStyles = fs.readFileSync(process.cwd() + '\\app\\app.scss', 'utf8');
+        appStyles = `@import "components/${name}/${name}.styles.scss";\n` + appStyles;
+        fs.writeFileSync(process.cwd() + '\\app\\app.scss', appStyles);
+
+        const compStyle = `${name} { //Do not remove this selector, put all your styles inside of it!\n\n}`;
+        fs.writeFileSync(process.cwd() + `\\app\\components\\${name}\\${name}.styles.scss`, compStyle);
+
         if(args['routing']) {
             if(!fs.existsSync(process.cwd() + '\\app\\router-config.js')) {
                 errors.printWarning(`Warning: router-config does not exists! Run ngjs-cli grc at first!`);
