@@ -52,8 +52,9 @@ gulp.task('compile-sass-serve', function () {
 
 });
 
+let configObject;
 gulp.task('copyFilesToVendor', function () {
-    const configObject = readConfigFile();
+    configObject = readConfigFile();
     if (!configObject.hasOwnProperty('copyToVendor')) {
         console.log(chalk.default.red('   Error: Invalid proxyconfig file!, copyFilesToVendor was not specified!'));
         process.exit();
@@ -62,6 +63,45 @@ gulp.task('copyFilesToVendor', function () {
         gulp.src(projectPath + item.from)
             .pipe(gulp.dest(projectPath + '/app/vendor/' + item.to));
     });
+    gulp.start('addImportsIndexHTML');
+});
+
+gulp.task('addImportsIndexHTML', function () {
+    let toImport = configObject.copyToVendor
+        .filter(item => item.importToIndexHTML)
+        .map(item => {
+            const file = `vendor${item.to}${item.from.substring(item.from.lastIndexOf('/'))}`;
+            return {
+                file: file,
+                type: item.importToIndexHTML
+            }
+        });
+    toImport = toImport.concat(configObject.createIndexHTMLInports);
+
+    let toImportCSS = [], toImportScript = [];
+    toImport.forEach(item => {
+       if(item.type === 'css') {
+           toImportCSS.push(item);
+       } else {
+           toImportScript.push(item);
+       }
+    });
+    toImportCSS.push({
+       file: 'app.css',
+       type: 'css'
+    });
+    toImportScript.push({
+        file: 'bundle.js',
+        type: 'script'
+    });
+    toImport = toImportCSS.concat(toImportScript);
+
+    let indexHTML = fs.readFileSync(`${process.cwd()}\\app\\index.html`, 'utf8');
+    indexHTML = indexHTML.split('\n')
+        .filter(line => !(line.includes('<script') || line.includes('<link rel="stylesheet"')));
+    const startToInsert = indexHTML.findIndex(line => line.includes('<link rel="icon"'));
+
+    //TODO: iterate backwards and append to ARRAY
 });
 
 gulp.task('watch', ['browserSync', 'copyFilesToVendor', 'concat-js-serve', 'compile-sass-serve'], function () {

@@ -24,6 +24,7 @@
     "angular": "^1.7.5",
     "angular-animate": "^1.7.5",
     "angular-aria": "^1.7.5",
+    "angular-i18n": "^1.7.5",
     "angular-locale": "^0.3.1",
     "angular-material": "^1.1.10",
     "angular-messages": "^1.7.5",
@@ -32,7 +33,7 @@
     "angular-ui-router": "^1.0.20",
     "jquery": "^3.3.1",
     "material-icons": "^0.3.0",
-    "roboto-npm-webfont": "^1.0.1",
-    "ngjs-cli": "^3.0.1"
+    "moment": "^2.23.0",
+    "roboto-npm-webfont": "^1.0.1"
   }
 }
