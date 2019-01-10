@@ -14,7 +14,7 @@ gulp.task('browserSync', function() {
     if(process.env.PROXYCONFIG_FILE) {
         let proxyconfig;
         try {
-            proxyconfig = JSON.parse(fs.readFileSync(process.cwd() + '\\' + process.env.PROXYCONFIG_FILE));
+            proxyconfig = JSON.parse(fs.readFileSync(process.cwd() + '\\' + process.env.PROXYCONFIG_FILE, 'utf8'));
             Object.keys(proxyconfig).forEach(key => {
                 jsonPlaceholderProxyArray.push(proxy(key, proxyconfig[key]));
             });
@@ -53,29 +53,18 @@ gulp.task('compile-sass-serve', function () {
 });
 
 gulp.task('copyFilesToVendor', function () {
-    gulp.src(projectPath + '/node_modules/angular/angular.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-resource/angular-resource.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-messages/angular-messages.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-sanitize/angular-sanitize.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-aria/angular-aria.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-animate/angular-animate.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-ui-router/release/angular-ui-router.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angularjs'));
-    gulp.src(projectPath + '/node_modules/angular-material/angular-material.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angular-material'));
-    gulp.src(projectPath + '/node_modules/angular-material/angular-material.min.css')
-        .pipe(gulp.dest(projectPath + '/app/vendor/angular-material'));
-    gulp.src(projectPath + '/node_modules/jquery/dist/jquery.min.js')
-        .pipe(gulp.dest(projectPath + '/app/vendor/jquery'));
+    const configObject = readConfigFile();
+    if (!configObject.hasOwnProperty('copyToVendor')) {
+        console.log(chalk.default.red('   Error: Invalid proxyconfig file!, copyFilesToVendor was not specified!'));
+        process.exit();
+    }
+    configObject.copyToVendor.forEach(item => {
+        gulp.src(projectPath + item.from)
+            .pipe(gulp.dest(projectPath + '/app/vendor/' + item.to));
+    });
 });
 
-gulp.task('watch', ['browserSync', 'concat-js-serve', 'compile-sass-serve', 'copyFilesToVendor'], function () {
+gulp.task('watch', ['browserSync', 'copyFilesToVendor', 'concat-js-serve', 'compile-sass-serve'], function () {
     gulp.watch([projectPath + '/app/**/*.js', '!' + projectPath + '/app/vendor/**', '!' + projectPath + '/app/bundle.js', '!*spec.js'], function (ev) {
         console.log(ev.type + ' ' + ev.path);
         gulp.start('concat-js-serve');
@@ -117,3 +106,16 @@ gulp.task('copyDist', function () {
     gulp.src([projectPath + '/app/assets/**'])
         .pipe(gulp.dest(projectPath + '/dist/assets'));
 });
+
+function readConfigFile() {
+    try {
+        if (!fs.existsSync(`${process.cwd()}\\ngjs-cli.config.json`)) {
+            console.log(chalk.default.red('   Error: File ngjs-cli.config.json was not found!'));
+            process.exit();
+        }
+        return JSON.parse(fs.readFileSync(`${process.cwd()}\\ngjs-cli.config.json`, 'utf8'));
+    } catch (e) {
+        console.log(chalk.default.red('   Error: Invalid ngjs-cli.config.json file!'));
+        process.exit();
+    }
+}
