@@ -45,7 +45,7 @@ gulp.task('concat-js-serve', function () {
 gulp.task('compile-sass-serve', function () {
    gulp.src([projectPath + '/app/app.scss'])
        .pipe(sourcemaps.init())
-       .pipe(sass())
+       .pipe(sass().on('error', sass.logError))
        .pipe(sourcemaps.write())
        .pipe(gulp.dest(projectPath + '/app'))
        .pipe(browserSync.stream());
@@ -76,7 +76,7 @@ gulp.task('addImportsIndexHTML', function () {
                 type: item.importToIndexHTML
             }
         });
-    toImport = toImport.concat(configObject.createIndexHTMLInports);
+    toImport = toImport.concat(configObject.createIndexHTMLImports);
 
     let toImportCSS = [], toImportScript = [];
     toImport.forEach(item => {
@@ -94,14 +94,17 @@ gulp.task('addImportsIndexHTML', function () {
         file: 'bundle.js',
         type: 'script'
     });
-    toImport = toImportCSS.concat(toImportScript);
+    toImport = toImportCSS.concat(toImportScript).reverse();
 
     let indexHTML = fs.readFileSync(`${process.cwd()}\\app\\index.html`, 'utf8');
     indexHTML = indexHTML.split('\n')
         .filter(line => !(line.includes('<script') || line.includes('<link rel="stylesheet"')));
-    const startToInsert = indexHTML.findIndex(line => line.includes('<link rel="icon"'));
+    const startToInsert = indexHTML.findIndex(line => line.includes('<link rel="icon"')) + 1;
 
-    //TODO: iterate backwards and append to ARRAY
+    toImport.forEach(item => {
+        indexHTML.splice(startToInsert, 0, convertInsertToCorrectTag(item));
+    });
+    fs.writeFileSync(`${process.cwd()}\\app\\index.html`, indexHTML.join('\n'))
 });
 
 gulp.task('watch', ['browserSync', 'copyFilesToVendor', 'concat-js-serve', 'compile-sass-serve'], function () {
@@ -134,7 +137,9 @@ gulp.task('concat-js-build', function () {
 
 gulp.task('compile-sass-build', function () {
     gulp.src([projectPath + '/app/app.scss'])
-        .pipe(sass())
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }).on('error', sass.logError))
         .pipe(gulp.dest(projectPath + '/dist'))
 });
 
@@ -157,5 +162,13 @@ function readConfigFile() {
     } catch (e) {
         console.log(chalk.default.red('   Error: Invalid ngjs-cli.config.json file!'));
         process.exit();
+    }
+}
+
+function convertInsertToCorrectTag(lineToInsert) {
+    if(lineToInsert.type === 'css') {
+        return `    <link rel="stylesheet" href="${lineToInsert.file}" >`
+    } else {
+        return `    <script src="${lineToInsert.file}" ></script>`
     }
 }
