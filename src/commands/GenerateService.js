@@ -21,7 +21,7 @@ module.exports = class GenerateService extends Command {
     static run(args) {
         const name = args._[1];
 
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
 
@@ -30,7 +30,7 @@ module.exports = class GenerateService extends Command {
             throw new errors.InvalidNameErrorUC();
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\services\\' + name + '.service.js')) {
+        if(fs.existsSync(path.join(process.cwd(), 'app', 'services', name + '.service.js'))) {
             throw new errors.ErrorPrintableMessage(`  Error: A service with the name: "${name}" already exists!`);
         }
 
@@ -38,7 +38,7 @@ module.exports = class GenerateService extends Command {
 
         template = template.replace(new RegExp('###upperCaseName###', 'g'), name);
 
-        fs.writeFileSync(process.cwd() + '\\app\\services\\' + name + '.service.js', template);
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'services', name + '.service.js'), template);
 
         console.log(chalk.default.green(`  Created Service "${name}" successfully!`));
     }

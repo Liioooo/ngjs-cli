@@ -26,27 +26,27 @@ module.exports = class CreateProject extends Command {
             throw new errors.InvalidNameErrorLNH();
         }
 
-        if(fs.existsSync(process.cwd() + '\\' + this.projectName)) {
+        if(fs.existsSync(path.join(process.cwd(), this.projectName))) {
             throw new errors.ErrorPrintableMessage('Error: A directory with this name already exists!');
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(fs.existsSync(process.cwd() + '/app/components')) {
             throw new errors.ErrorPrintableMessage('Error: The current directory already is a AngularJS project!');
         }
 
-        this.copyDirectory(path.join(__dirname, '..', '..', 'project-template'), process.cwd() + '\\' + this.projectName);
+        this.copyDirectory(path.join(__dirname, '..', '..', 'project-template'), path.join(process.cwd(), this.projectName));
 
         if(args['routing']) {
-            fs.copyFileSync(path.join(__dirname, '..', '..', 'templates', 'router-config.js'), process.cwd() + '\\' + this.projectName + '\\app\\router-config.js');
+            fs.copyFileSync(path.join(__dirname, '..', '..', 'templates', 'router-config.js'), path.join(process.cwd(), this.projectName, 'app', 'router-config.js'));
 
-            let indexHTML = fs.readFileSync(process.cwd() + '\\' + this.projectName + '\\app\\index.html', 'utf8');
+            let indexHTML = fs.readFileSync(path.join(process.cwd(), this.projectName, 'app', 'index.html'), 'utf8');
             let firstPart = indexHTML.substring(0, indexHTML.indexOf('</md-content>'));
             let secondPart = indexHTML.substring(indexHTML.indexOf('</md-content>'));
 
             const newHTML = `${firstPart}   <ui-view></ui-view>
     ${secondPart}`;
 
-            fs.writeFileSync(process.cwd() + '\\' + this.projectName + '\\app\\index.html', newHTML);
+            fs.writeFileSync(path.join(process.cwd(), this.projectName, 'app', 'index.html'), newHTML);
         }
 
         console.log(chalk.default.green(`   Created Project "${this.projectName}" successfully!`));

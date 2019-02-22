@@ -1,6 +1,7 @@
 const Command = require('../Command');
 const gulp = require('gulp');
 const fs = require('fs');
+const path = require('path');
 const errors = require('../errors');
 require('../gulpfile');
 
@@ -19,10 +20,9 @@ module.exports = class Serve extends Command {
     }
 
     static run(args) {
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
-
         delete process.env.PROXYCONFIG_FILE;
         if(args['proxyconfig']) {
             if(args['proxyconfig'] !== true) {

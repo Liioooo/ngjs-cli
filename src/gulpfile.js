@@ -6,6 +6,7 @@ const browserSync = require('browser-sync').create();
 const proxy = require('http-proxy-middleware');
 const fs = require('fs');
 const chalk = require('chalk');
+const path = require('path');
 
 const projectPath = process.cwd();
 
@@ -14,7 +15,7 @@ gulp.task('browserSync', function() {
     if(process.env.PROXYCONFIG_FILE) {
         let proxyconfig;
         try {
-            proxyconfig = JSON.parse(fs.readFileSync(process.cwd() + '\\' + process.env.PROXYCONFIG_FILE, 'utf8'));
+            proxyconfig = JSON.parse(fs.readFileSync(path.join(process.cwd(), process.env.PROXYCONFIG_FILE), 'utf8'));
             Object.keys(proxyconfig).forEach(key => {
                 jsonPlaceholderProxyArray.push(proxy(key, proxyconfig[key]));
             });
@@ -96,7 +97,7 @@ gulp.task('addImportsIndexHTML', function () {
     });
     toImport = toImportCSS.concat(toImportScript).reverse();
 
-    let indexHTML = fs.readFileSync(`${process.cwd()}\\app\\index.html`, 'utf8');
+    let indexHTML = fs.readFileSync(path.join(process.cwd(), 'app', 'index.html'), 'utf8');
     indexHTML = indexHTML.split('\n')
         .filter(line => !(line.includes('<script') || line.includes('<link rel="stylesheet"')));
     const startToInsert = indexHTML.findIndex(line => line.includes('<link rel="icon"')) + 1;
@@ -104,7 +105,7 @@ gulp.task('addImportsIndexHTML', function () {
     toImport.forEach(item => {
         indexHTML.splice(startToInsert, 0, convertInsertToCorrectTag(item));
     });
-    fs.writeFileSync(`${process.cwd()}\\app\\index.html`, indexHTML.join('\n'))
+    fs.writeFileSync(path.join(process.cwd(), 'app', 'index.html'), indexHTML.join('\n'))
 });
 
 gulp.task('watch', ['browserSync', 'copyFilesToVendor', 'concat-js-serve', 'compile-sass-serve'], function () {
@@ -154,11 +155,11 @@ gulp.task('copyDist', function () {
 
 function readConfigFile() {
     try {
-        if (!fs.existsSync(`${process.cwd()}\\ngjs-cli.config.json`)) {
+        if (!fs.existsSync(path.join(process.cwd(), 'ngjs-cli.config.json'))) {
             console.log(chalk.default.red('   Error: File ngjs-cli.config.json was not found!'));
             process.exit();
         }
-        return JSON.parse(fs.readFileSync(`${process.cwd()}\\ngjs-cli.config.json`, 'utf8'));
+        return JSON.parse(fs.readFileSync(path.join(process.cwd(), 'ngjs-cli.config.json'), 'utf8'));
     } catch (e) {
         console.log(chalk.default.red('   Error: Invalid ngjs-cli.config.json file!'));
         process.exit();

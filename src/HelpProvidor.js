@@ -1,10 +1,11 @@
 const chalk = require('chalk');
+const path = require('path');
 
 module.exports = class HelpProvidor {
 
     static printEntireHelp() {
         console.log(`${chalk.default.magenta('Help for AngularJS-CLI by Liiioooo')}\n`);
-        require("fs").readdirSync(__dirname + '\\commands').forEach((file) => {
+        require("fs").readdirSync(path.join(__dirname, 'commands')).forEach((file) => {
             console.log(`   ${require("./commands/" + file).helpText}`);
         });
         console.log('\n   Flags can be shortened with:\n',

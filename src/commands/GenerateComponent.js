@@ -21,11 +21,11 @@ module.exports = class GenerateComponent extends Command {
     static run(args) {
         const name = args._[1];
 
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\components\\' + name)) {
+        if(fs.existsSync(path.join(process.cwd(), 'app', 'components', name))) {
             throw new errors.ErrorPrintableMessage(`  Error: A component with the name: "${name}" already exists!`);
         }
 
@@ -43,22 +43,22 @@ module.exports = class GenerateComponent extends Command {
         template = template.replace(new RegExp('###upperCaseName###', 'g'), upperCaseName);
         template = template.replace(new RegExp('###camelCaseName###', 'g'), camelCaseName);
 
-        fs.mkdirSync(process.cwd() + '\\app\\components\\' + name);
-        fs.writeFileSync(process.cwd() + '\\app\\components\\' + name + '\\' + name + '.component.js', template);
-        fs.writeFileSync(process.cwd() + '\\app\\components\\' + name + '\\' + name + '.component.html', `<p>${name} works!</p>`);
+        fs.mkdirSync(path.join(process.cwd(), 'app', 'components', name));
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'components', name, name + '.component.js'), template);
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'components', name, name + '.component.html'), `<p>${name} works!</p>`);
 
-        let appStyles = fs.readFileSync(process.cwd() + '\\app\\app.scss', 'utf8');
+        let appStyles = fs.readFileSync(path.join(process.cwd(), 'app', 'app.scss'), 'utf8');
         appStyles = `@import "components/${name}/${name}.styles.scss";\n` + appStyles;
-        fs.writeFileSync(process.cwd() + '\\app\\app.scss', appStyles);
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'app.scss'), appStyles);
 
         const compStyle = `${name} { //Do not remove this selector, put all your styles inside of it!\n\n}`;
-        fs.writeFileSync(process.cwd() + `\\app\\components\\${name}\\${name}.styles.scss`, compStyle);
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'components', name, name + '.styles.scss'), compStyle);
 
         if(args['routing']) {
-            if(!fs.existsSync(process.cwd() + '\\app\\router-config.js')) {
+            if(!fs.existsSync(path.join(process.cwd(), 'app', 'router-config.js'))) {
                 errors.printWarning(`Warning: router-config does not exists! Run ngjs-cli grc at first!`);
             } else {
-                let routerConfig = fs.readFileSync(process.cwd() + '\\app\\router-config.js', 'utf8');
+                let routerConfig = fs.readFileSync(path.join(process.cwd(), 'app', 'router-config.js'), 'utf8');
                 let firstPart = routerConfig.substring(0, routerConfig.indexOf('$urlRouterProvider.otherwise'));
                 let secondPart = routerConfig.substring(routerConfig.indexOf('$urlRouterProvider.otherwise'));
 
@@ -70,7 +70,7 @@ module.exports = class GenerateComponent extends Command {
         
     ${secondPart}`;
 
-                fs.writeFileSync(process.cwd() + '\\app\\router-config.js', newConfig);
+                fs.writeFileSync(path.join(process.cwd(), 'app', 'router-config.js'), newConfig);
             }
         }
 

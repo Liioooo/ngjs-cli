@@ -18,15 +18,15 @@ module.exports = class GenerateValueFile extends Command {
     }
 
     static run(args) {
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\values.js')) {
+        if(fs.existsSync(path.join(process.cwd(), 'app', 'values.js'))) {
             throw new errors.ErrorPrintableMessage(`  Error: value-file already exists!`);
         }
 
-        fs.writeFileSync(process.cwd() + '\\app\\values.js', 'app.value(\"valueName\", \"value\");');
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'values.js'), 'app.value(\"valueName\", \"value\");');
 
         console.log(chalk.default.green(`  Created value.js successfully!`));
     }

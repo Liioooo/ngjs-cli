@@ -2,6 +2,7 @@ const Command = require('../Command');
 const gulp = require('gulp');
 const fs = require('fs');
 const errors = require('../errors');
+const path = require('path');
 require('../gulpfile');
 
 module.exports = class Build extends Command {
@@ -19,7 +20,7 @@ module.exports = class Build extends Command {
     }
 
     static run(args) {
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
 

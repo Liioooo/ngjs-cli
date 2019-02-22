@@ -21,7 +21,7 @@ module.exports = class GenerateFilter extends Command {
     static run(args) {
         const name = args._[1];
 
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
 
@@ -30,14 +30,14 @@ module.exports = class GenerateFilter extends Command {
             throw new errors.InvalidNameErrorLNH();
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\filters\\' + name + '.filter.js')) {
+        if(fs.existsSync(path.join(process.cwd(), 'app', 'filters', name + '.filter.js'))) {
             throw new errors.ErrorPrintableMessage(`  Error: A filter with the name: "${name}" already exists!`);
         }
 
         let template = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'filter.js'), 'utf8');
         template = template.replace(new RegExp('###name###', 'g'), name);
 
-        fs.writeFileSync(process.cwd() + '\\app\\filters\\' + name + '.filter.js', template);
+        fs.writeFileSync(path.join(process.cwd(), 'app', 'filters', name + '.filter.js'), template);
 
         console.log(chalk.default.green(`  Created Filter "${name}" successfully!`));
     }

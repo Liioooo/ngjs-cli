@@ -1,9 +1,10 @@
 const HelpProvidor = require('./HelpProvidor');
 const errors = require('./errors');
 const chalk = require('chalk');
+const path = require('path');
 
 let commands = [];
-require("fs").readdirSync(__dirname + '\\commands').forEach((file) => {
+require("fs").readdirSync(path.join(__dirname, 'commands')).forEach((file) => {
     commands.push(require("./commands/" + file));
 });
 

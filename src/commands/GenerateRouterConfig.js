@@ -19,15 +19,15 @@ module.exports = class GenerateRouterConfig extends Command {
     }
 
     static run(args) {
-        if(!fs.existsSync(process.cwd() + '\\app\\components')) {
+        if(!fs.existsSync(path.join(process.cwd(), 'app', 'components'))) {
             throw new errors.NotAProjectDirError();
         }
 
-        if(fs.existsSync(process.cwd() + '\\app\\router-config.js')) {
+        if(fs.existsSync(path.join(process.cwd(), 'app', 'router-config.js'))) {
             throw new errors.ErrorPrintableMessage(`  Error: router-config already exists!`);
         }
 
-        fs.copyFileSync(path.join(__dirname, '..', '..', 'templates', 'router-config.js'), process.cwd() + '\\app\\router-config.js');
+        fs.copyFileSync(path.join(__dirname, '..', '..', 'templates', 'router-config.js'), path.join(process.cwd(), 'app', 'router-config.js'));
 
         console.log(chalk.default.green(`  Created router-config successfully!`));
     }
