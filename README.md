@@ -101,3 +101,6 @@ Changed style to SCSS, there are know stylesheets for every component
 
 `3.1.0`<br>
 Added `ngjs-cli.config.json` File, The CLI now auto copies files referenced in the config file to '/vendor' and automatically creates imports for files in 'index.html'.
+
+`3.1.2`<br>
+Fixed Paths on Linux
